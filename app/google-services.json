@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "782100152773",
+    "project_id": "mt-project-ea3cd",
+    "storage_bucket": "mt-project-ea3cd.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:782100152773:android:cb8ff2f9ba14cf087ccbac",
+        "android_client_info": {
+          "package_name": "com.ammer.myapplication"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBa1z5fICFCt2M9Np9V47olKysIsPzVWGE"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
