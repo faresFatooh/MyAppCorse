@@ -1,4 +1,4 @@
-package com.hrtrack.app;
+package com.hrtrack.app.adapter;
 
 import android.content.Context;
 import android.content.Intent;
@@ -9,6 +9,15 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.hrtrack.app.R;
+import com.hrtrack.app.models.Module;
+import com.hrtrack.app.ui.AttendanceActivity;
+import com.hrtrack.app.ui.CalendarActivity;
+import com.hrtrack.app.ui.EditTaskActivity;
+import com.hrtrack.app.ui.ReportsActivity;
+import com.hrtrack.app.ui.TaskManagerActivity;
+
 import java.util.List;
 
 public class ModuleAdapter extends RecyclerView.Adapter<ModuleAdapter.ModuleViewHolder> {

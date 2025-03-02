@@ -9,7 +9,7 @@
     android:id="@+id/main"
     android:background="@color/background_color"
     android:orientation="vertical"
-    tools:context=".LoginActivity">
+    tools:context=".auth.LoginActivity">
 
     <!-- Logo -->
     <ImageView

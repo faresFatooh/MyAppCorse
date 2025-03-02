@@ -15,31 +15,31 @@
         android:theme="@style/Theme.MyApplication"
         tools:targetApi="31">
         <activity
-            android:name=".EditTaskActivity"
+            android:name=".ui.EditTaskActivity"
             android:exported="false" />
         <activity
-            android:name=".ReportsActivity"
+            android:name=".ui.ReportsActivity"
             android:exported="false" />
         <activity
-            android:name=".CalendarActivity"
+            android:name=".ui.CalendarActivity"
             android:exported="false" />
         <activity
-            android:name=".TaskManagerActivity"
+            android:name=".ui.TaskManagerActivity"
             android:exported="false" />
         <activity
-            android:name=".AttendanceActivity"
+            android:name=".ui.AttendanceActivity"
             android:exported="false" />
         <activity
-            android:name=".SettingsActivity"
+            android:name=".ui.SettingsActivity"
             android:exported="false" />
         <activity
-            android:name=".EditAccountActivity"
+            android:name=".ui.EditAccountActivity"
             android:exported="false" />
         <activity
-            android:name=".SignUpActivity"
+            android:name=".auth.SignUpActivity"
             android:exported="false" />
         <activity
-            android:name=".LoginActivity"
+            android:name=".auth.LoginActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

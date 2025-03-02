@@ -3,7 +3,6 @@ package com.hrtrack.app;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
@@ -15,6 +14,11 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.navigation.NavigationView;
 import com.google.firebase.auth.FirebaseAuth;
+import com.hrtrack.app.adapter.ModuleAdapter;
+import com.hrtrack.app.auth.LoginActivity;
+import com.hrtrack.app.models.Module;
+import com.hrtrack.app.ui.EditAccountActivity;
+import com.hrtrack.app.ui.SettingsActivity;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -1,4 +1,4 @@
-package com.hrtrack.app;
+package com.hrtrack.app.models;
 
 public class Module {
     private String title;
