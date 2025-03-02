@@ -22,8 +22,8 @@
             <InsightsFilterSettings>
               <option name="connection">
                 <ConnectionSetting>
-                  <option name="appId" value="com.ammer.myapplication" />
-                  <option name="mobileSdkAppId" value="1:782100152773:android:cb8ff2f9ba14cf087ccbac" />
+                  <option name="appId" value="com.hrtrack.app" />
+                  <option name="mobileSdkAppId" value="1:782100152773:android:45a0f86ccbecd3d77ccbac" />
                   <option name="projectId" value="mt-project-ea3cd" />
                   <option name="projectNumber" value="782100152773" />
                 </ConnectionSetting>

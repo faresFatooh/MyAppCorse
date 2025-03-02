@@ -1,4 +1,4 @@
-package com.ammer.myapplication;
+package com.ammer.app;
 
 import org.junit.Test;
 

@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:782100152773:android:cb8ff2f9ba14cf087ccbac",
+        "mobilesdk_app_id": "1:782100152773:android:45a0f86ccbecd3d77ccbac",
         "android_client_info": {
-          "package_name": "com.ammer.myapplication"
+          "package_name": "com.hrtrack.app"
         }
       },
       "oauth_client": [],
