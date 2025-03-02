@@ -142,7 +142,7 @@ public class LoginActivity extends AppCompatActivity {
     private void showCustomToast(String message) {
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.custom_toast, findViewById(R.id.custom_toast_container));
-        @SuppressLint("MissingInflatedId") TextView text = layout.findViewById(R.id.custom_toast_text);
+        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView text = layout.findViewById(R.id.custom_toast_text);
         text.setText(message);
         Toast toast = new Toast(getApplicationContext());
         toast.setDuration(Toast.LENGTH_LONG);
