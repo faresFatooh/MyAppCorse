@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/workHoursFragment">
+
+    <fragment
+        android:id="@+id/workHoursFragment"
+        android:name="com.hrtrack.app.fragment.WorkHoursFragment"
+        android:label="Work Hours" />
+    <fragment
+        android:id="@+id/holidaysFragment"
+        android:name="com.hrtrack.app.fragment.HolidaysFragment"
+        android:label="Holidays" />
+    <fragment
+        android:id="@+id/reportsFragment"
+        android:name="com.hrtrack.app.fragment.ReportsFragment"
+        android:label="Reports" />
+</navigation>

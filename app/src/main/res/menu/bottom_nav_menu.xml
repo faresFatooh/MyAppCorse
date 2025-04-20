@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/workHoursFragment"
+        android:icon="@drawable/baseline_work_24"
+        android:title="@string/menu_work_hours" />
+    <item
+        android:id="@+id/holidaysFragment"
+        android:icon="@drawable/baseline_holiday_village_24"
+        android:title="@string/menu_holidays" />
+    <item
+        android:id="@+id/reportsFragment"
+        android:icon="@drawable/baseline_report_24"
+        android:title="@string/menu_reports" />
+</menu>

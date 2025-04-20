@@ -29,7 +29,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.hrtrack.app.MainActivity;
 import com.hrtrack.app.R;
-
+@SuppressLint({"MissingInflatedId", "LocalSuppress"})
 public class LoginActivity extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
@@ -43,13 +43,13 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_login);
+
         ViewCompat.setOnApplyWindowInsetsListener(findViewById(R.id.main), (v, insets) -> {
             Insets systemBars = insets.getInsets(WindowInsetsCompat.Type.systemBars());
             v.setPadding(systemBars.left, systemBars.top, systemBars.right, systemBars.bottom);
             return insets;
         });
 
-        // Initialize Firebase Auth
         mAuth = FirebaseAuth.getInstance();
 
         email = findViewById(R.id.login_ed_email);
@@ -57,44 +57,35 @@ public class LoginActivity extends AppCompatActivity {
         loginBtn = findViewById(R.id.login_btn);
         signUp = findViewById(R.id.tv_signUp);
 
-        // إعداد ProgressDialog لإظهار مؤشر التحميل أثناء تسجيل الدخول
         progressDialog = new ProgressDialog(this);
         progressDialog.setMessage("Please wait...");
         progressDialog.setCancelable(false);
 
-        loginBtn.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                validateAndLogin();
-            }
+        loginBtn.setOnClickListener(view -> {
+            if (!loginBtn.isEnabled()) return;
+            validateAndLogin();
         });
 
-        signUp.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                goToSignUp();
-            }
+        signUp.setOnClickListener(view -> {
+            startActivity(new Intent(LoginActivity.this, SignUpActivity.class));
+            overridePendingTransition(android.R.anim.slide_in_left, android.R.anim.slide_out_right);
+            finish();
         });
     }
 
     @Override
     protected void onStart() {
         super.onStart();
-        // التحقق مما إذا كان المستخدم مسجل دخول بالفعل
         FirebaseUser currentUser = mAuth.getCurrentUser();
         if (currentUser != null) {
             updateUI(currentUser);
         }
     }
 
-    /**
-     * التحقق من المدخلات ثم بدء عملية تسجيل الدخول
-     */
     private void validateAndLogin() {
         String emailInput = email.getText().toString().trim();
         String passwordInput = password.getText().toString().trim();
 
-        // التحقق من المدخلات
         if (emailInput.isEmpty()) {
             showCustomToast("Please enter your email.");
             return;
@@ -112,39 +103,30 @@ public class LoginActivity extends AppCompatActivity {
             return;
         }
 
-        // تعطيل الزر أثناء عملية تسجيل الدخول
         loginBtn.setEnabled(false);
         progressDialog.show();
 
-        // محاولة تسجيل الدخول باستخدام Firebase
         mAuth.signInWithEmailAndPassword(emailInput, passwordInput)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        // إعادة تمكين الزر وإخفاء مؤشر التحميل
-                        loginBtn.setEnabled(true);
-                        progressDialog.dismiss();
+                .addOnCompleteListener(this, task -> {
+                    loginBtn.setEnabled(true);
+                    progressDialog.dismiss();
 
-                        if (task.isSuccessful()) {
-                            Log.d(TAG, "signInWithEmail:success");
-                            FirebaseUser user = mAuth.getCurrentUser();
-                            updateUI(user);
-                        } else {
-                            Log.w(TAG, "signInWithEmail:failure", task.getException());
-                            showCustomToast("Authentication failed. " +
-                                    (task.getException() != null ? task.getException().getMessage() : ""));
-                        }
+                    if (task.isSuccessful()) {
+                        Log.d(TAG, "signInWithEmail:success");
+                        FirebaseUser user = mAuth.getCurrentUser();
+                        updateUI(user);
+                    } else {
+                        Log.w(TAG, "signInWithEmail:failure", task.getException());
+                        showCustomToast("Authentication failed. " +
+                                (task.getException() != null ? task.getException().getMessage() : ""));
                     }
                 });
     }
 
-    /**
-     * عرض رسالة خطأ باستخدام Custom Toast
-     */
     private void showCustomToast(String message) {
         LayoutInflater inflater = getLayoutInflater();
         View layout = inflater.inflate(R.layout.custom_toast, findViewById(R.id.custom_toast_container));
-        @SuppressLint({"MissingInflatedId", "LocalSuppress"}) TextView text = layout.findViewById(R.id.custom_toast_text);
+        TextView text = layout.findViewById(R.id.custom_toast_text);
         text.setText(message);
         Toast toast = new Toast(getApplicationContext());
         toast.setDuration(Toast.LENGTH_LONG);
@@ -152,16 +134,10 @@ public class LoginActivity extends AppCompatActivity {
         toast.show();
     }
 
-    private void updateUI(FirebaseUser user) {
-        // الانتقال إلى MainActivity في حال تسجيل الدخول بنجاح
-        Intent intent = new Intent(LoginActivity.this, MainActivity.class);
-        startActivity(intent);
-        finish();
-    }
 
-    private void goToSignUp() {
-        Intent intent = new Intent(LoginActivity.this, SignUpActivity.class);
-        startActivity(intent);
+    private void updateUI(FirebaseUser user) {
+        startActivity(new Intent(LoginActivity.this, MainActivity.class));
+        overridePendingTransition(android.R.anim.fade_in, android.R.anim.fade_out);
         finish();
     }
 }

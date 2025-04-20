@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "782100152773",
-    "project_id": "mt-project-ea3cd",
-    "storage_bucket": "mt-project-ea3cd.firebasestorage.app"
+    "project_number": "225472183759",
+    "project_id": "hr-track",
+    "storage_bucket": "hr-track.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:782100152773:android:45a0f86ccbecd3d77ccbac",
+        "mobilesdk_app_id": "1:225472183759:android:31af24dd2f84e92536a6ba",
         "android_client_info": {
           "package_name": "com.hrtrack.app"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyBa1z5fICFCt2M9Np9V47olKysIsPzVWGE"
+          "current_key": "AIzaSyA270CgJ9RXbRpQWLO7pOULcNw7zEghsXk"
         }
       ],
       "services": {

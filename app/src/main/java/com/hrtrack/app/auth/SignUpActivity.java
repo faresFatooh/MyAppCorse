@@ -6,26 +6,23 @@ import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
-import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.hrtrack.app.MainActivity;
 import com.hrtrack.app.R;
-import com.hrtrack.app.fragmint.AccountInfoFragment;
-import com.hrtrack.app.fragmint.PersonalInfoFragment;
-import com.hrtrack.app.fragmint.WorkInfoFragment;
+import com.hrtrack.app.fragment.AccountInfoFragment;
+import com.hrtrack.app.fragment.PersonalInfoFragment;
+import com.hrtrack.app.fragment.WorkInfoFragment;
+import com.hrtrack.app.utils.CustomToast;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SignUpActivity extends AppCompatActivity {
@@ -34,12 +31,10 @@ public class SignUpActivity extends AppCompatActivity {
     private Fragment[] fragments;
     private Button btnPrev, btnNext;
 
-    // Firebase
     private FirebaseAuth mAuth;
     private FirebaseFirestore firestore;
     private ProgressDialog progressDialog;
 
-    // لتجميع البيانات من الفِراغمنتس
     private PersonalInfoFragment personalInfoFragment;
     private WorkInfoFragment workInfoFragment;
     private AccountInfoFragment accountInfoFragment;
@@ -58,17 +53,14 @@ public class SignUpActivity extends AppCompatActivity {
         progressDialog.setMessage("Processing...");
         progressDialog.setCancelable(false);
 
-        // إنشاء الفِراغمنتس
         personalInfoFragment = new PersonalInfoFragment();
         workInfoFragment = new WorkInfoFragment();
         accountInfoFragment = new AccountInfoFragment();
 
         fragments = new Fragment[]{ personalInfoFragment, workInfoFragment, accountInfoFragment };
-
-        // عرض الفِراغمنت الأول
         loadFragment(fragments[currentStep]);
+        updateNavigation();
 
-        // إعداد أزرار التنقل
         btnPrev.setOnClickListener(v -> {
             if (currentStep > 0) {
                 currentStep--;
@@ -78,17 +70,17 @@ public class SignUpActivity extends AppCompatActivity {
         });
 
         btnNext.setOnClickListener(v -> {
+            if (currentStep == 1 && !workInfoFragment.validateInputs()) {
+                return;
+            }
             if (currentStep < fragments.length - 1) {
                 currentStep++;
                 loadFragment(fragments[currentStep]);
                 updateNavigation();
             } else {
-                // آخر خطوة: تقديم البيانات
                 submitData();
             }
         });
-
-        updateNavigation();
     }
 
     private void loadFragment(Fragment fragment) {
@@ -103,41 +95,19 @@ public class SignUpActivity extends AppCompatActivity {
     }
 
     private void submitData() {
-        // جمع بيانات الفِراغمنتس
         String fullName = personalInfoFragment.getFullName();
         String birthDate = personalInfoFragment.getBirthDate();
         String gender = personalInfoFragment.getGender();
-
         String jobTitle = workInfoFragment.getJobTitle();
-        Map<String, Object> workingSchedule = workInfoFragment.getWorkingSchedule();
-
+        List<Map<String, String>> workingSchedule = workInfoFragment.getWorkingSchedule();
         String email = accountInfoFragment.getEmail();
         String password = accountInfoFragment.getPassword();
         String confirmPassword = accountInfoFragment.getConfirmPassword();
 
-        // التحقق الأساسي
-        if (TextUtils.isEmpty(fullName) || TextUtils.isEmpty(birthDate) || TextUtils.isEmpty(gender)) {
-            Toast.makeText(this, "Please complete personal information", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (TextUtils.isEmpty(jobTitle)) {
-            Toast.makeText(this, "Please enter your job title", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
-            Toast.makeText(this, "Please complete account information", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (!password.equals(confirmPassword)) {
-            Toast.makeText(this, "Passwords do not match", Toast.LENGTH_SHORT).show();
-            return;
-        }
-        if (!accountInfoFragment.isPrivacyAccepted()) {
-            Toast.makeText(this, "You must accept the Privacy Policy", Toast.LENGTH_SHORT).show();
+        if (!validateInputs(fullName, birthDate, gender, jobTitle, workingSchedule, email, password, confirmPassword)) {
             return;
         }
 
-        // تجميع بيانات المستخدم
         Map<String, Object> userData = new HashMap<>();
         userData.put("fullName", fullName);
         userData.put("birthDate", birthDate);
@@ -145,39 +115,62 @@ public class SignUpActivity extends AppCompatActivity {
         userData.put("jobTitle", jobTitle);
         userData.put("workingSchedule", workingSchedule);
         userData.put("email", email);
+        userData.put("profileImageUrl", "profileImageUrl");
 
         progressDialog.show();
 
-        // إنشاء حساب المستخدم باستخدام FirebaseAuth
         mAuth.createUserWithEmailAndPassword(email, password)
-                .addOnCompleteListener(SignUpActivity.this, new OnCompleteListener<AuthResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        progressDialog.dismiss();
-                        if (task.isSuccessful()) {
-                            String userId = mAuth.getCurrentUser().getUid();
-                            // تخزين بيانات المستخدم في Firestore
-                            firestore.collection("users").document(userId)
-                                    .set(userData)
-                                    .addOnCompleteListener(task1 -> {
-                                        if (task1.isSuccessful()) {
-                                            Toast.makeText(SignUpActivity.this, "Registration Successful!", Toast.LENGTH_SHORT).show();
-                                            updateUI(mAuth.getCurrentUser());
-                                        } else {
-                                            Toast.makeText(SignUpActivity.this, "Error: " + task1.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                                        }
-                                    });
-                        } else {
-                            Toast.makeText(SignUpActivity.this, "Registration Failed: " + task.getException().getMessage(), Toast.LENGTH_SHORT).show();
-                        }
+                .addOnCompleteListener(this, task -> {
+                    progressDialog.dismiss();
+                    if (task.isSuccessful()) {
+                        String userId = mAuth.getCurrentUser().getUid();
+                        firestore.collection("users").document(userId)
+                                .set(userData)
+                                .addOnCompleteListener(storeTask -> {
+                                    if (storeTask.isSuccessful()) {
+                                        CustomToast.show(this, "Registration Successful!");
+                                        updateUI(mAuth.getCurrentUser());
+                                    } else {
+                                        CustomToast.show(this, "Error: " + storeTask.getException().getMessage());
+                                    }
+                                });
+                    } else {
+                        CustomToast.show(this, "Registration Failed: " + task.getException().getMessage());
                     }
                 });
     }
+
+    private boolean validateInputs(String fullName, String birthDate, String gender, String jobTitle,
+                                   List<Map<String, String>> workingSchedule, String email, String password, String confirmPassword) {
+        if (TextUtils.isEmpty(fullName) || TextUtils.isEmpty(birthDate) || TextUtils.isEmpty(gender)) {
+            CustomToast.show(this, "Please complete personal information");
+            return false;
+        }
+        if (TextUtils.isEmpty(jobTitle)) {
+            CustomToast.show(this, "Please enter your job title");
+            return false;
+        }
+        if (workingSchedule.isEmpty()) {
+            CustomToast.show(this, "Please select at least one working day with valid times");
+            return false;
+        }
+        if (TextUtils.isEmpty(email) || TextUtils.isEmpty(password) || TextUtils.isEmpty(confirmPassword)) {
+            CustomToast.show(this, "Please complete account information");
+            return false;
+        }
+        if (!password.equals(confirmPassword)) {
+            CustomToast.show(this, "Passwords do not match");
+            return false;
+        }
+        if (!accountInfoFragment.isPrivacyAccepted()) {
+            CustomToast.show(this, "You must accept the Privacy Policy");
+            return false;
+        }
+        return true;
+    }
+
     private void updateUI(FirebaseUser user) {
-        // الانتقال إلى MainActivity في حال تسجيل الدخول بنجاح
-        Intent intent = new Intent(SignUpActivity.this, MainActivity.class);
-        startActivity(intent);
+        startActivity(new Intent(this, MainActivity.class));
         finish();
     }
 }
-
