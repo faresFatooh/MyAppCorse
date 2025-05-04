@@ -1,6 +1,5 @@
 <resources>
     <string name="app_name">HR Track</string>
-    <!-- TODO: Remove or change this placeholder text -->
     <string name="progress_message">Processing...</string>
     <string name="btn_next">Next</string>
     <string name="btn_submit">Submit</string>
@@ -56,6 +55,9 @@
     <string name="work_hours_item">Hours: %1$s - %2$s</string>
     <string name="work_hours_recorded">Work hours recorded</string>
 
+    <string name="navigation_drawer_open">Open navigation drawer</string>
+    <string name="navigation_drawer_close">Close navigation drawer</string>
+
     <string name="hint_holiday_date">Holiday Date</string>
     <string name="hint_holiday_reason">Reason</string>
     <string name="label_add_holiday">Add Holiday</string>
@@ -71,6 +73,12 @@
     <string name="weekly_hours_placeholder">Weekly Hours: 0</string>
     <string name="monthly_hours_placeholder">Monthly Hours: 0</string>
     <string name="total_holidays_placeholder">Total Holidays: 0</string>
+    <string name="weekly_hours_title">Weekly Hours</string>
+    <string name="monthly_hours_title">Monthly Hours</string>
+    <string name="total_holidays_title">Total Holidays</string>
+    <string name="weekly_hours_icon">Weekly hours icon</string>
+    <string name="monthly_hours_icon">Monthly hours icon</string>
+    <string name="total_holidays_icon">Holidays icon</string>
 
     <string name="label_work_hours">Work Hours</string>
     <string name="label_date">Date</string>
@@ -85,5 +93,65 @@
     <string name="btn_cancel">Cancel</string>
     <string name="label_working_hours">Working Hours</string>
     <string name="error_invalid_time_range">End time must be after start time for %s</string>
+    <string name="edit_profile">Edit Profile</string>
+    <string name="logout">Logout</string>
+    <string name="actions">Actions</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="default_user_name">User</string>
+    <string name="error_load_data">Failed to load holidays: %s</string>
+    <string name="title_add_task">Add Task</string>
+    <string name="title_edit_task">Edit Task</string>
+    <string name="label_save">Save</string>
+    <string name="label_update">Update</string>
+    <string name="label_cancel">Cancel</string>
+    <string name="error_required_fields">Please fill all required fields</string>
+    <string name="title_tasks">Tasks</string>
+    <string name="label_notifications">Notifications</string>
+    <string name="no_notifications">No notifications available</string>
+    <string name="profile_image">Profile Image</string>
+    <string name="change_photo">Change Photo</string>
+    <string name="full_name">Full Name</string>
+    <string name="email">Email</string>
+    <string name="birth_date">Date of Birth</string>
+    <string name="gender">Gender</string>
+    <string name="job_title">Job Title</string>
+    <string name="save_changes">Save Changes</string>
+
+    <string name="select_picture">Choose Photo</string>
+    <string name="profile_updated">Profile updated successfully!</string>
+    <string name="update_error">Error updating profile</string>
+    <string name="image_upload_failed">Failed to upload image</string>
+    <string name="tasks">Tasks</string>
+    <string name="task_title">Task Title</string>
+    <string name="task_description">Task Description</string>
+    <string name="due_date">Due Date</string>
+    <string name="due_time">Due Time</string>
+    <string name="save_task">Save Task</string>
+    <string name="task_saved">Task Saved!</string>
+    <string name="task_save_error">Failed to Save Task</string>
+    <string name="notification_title">Task Reminder!</string>
+    <string name="notification">Notification</string>
+    <string name="fill_required_fields">Fill required fields</string>
+    <string name="nav_tasks">Tasks</string>
+    <string name="save">Save</string>
+    <string name="cancel">Cancel</string>
+    <string name="select_date">Select date</string>
+    <string name="filter_by_date">Filter by date</string>
+    <string-array name="genders">
+        <item>Male</item>
+        <item>Female</item>
+        <item>Other</item>
+    </string-array>
+    <string name="hint_title">Title</string>
+    <string name="hint_description">Description</string>
+    <string name="hint_date">Date (YYYY-MM-DD)</string>
+    <string name="hint_time">Time (HH:MM)</string>
+    <string name="button_save">Save</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="error_not_logged_in">error not logged in</string>
+    <string name="task_updated">task updated</string>
+    <string name="task_deleted">task deleted</string>
+    <string name="task_added">task added</string>
+
 
 </resources>

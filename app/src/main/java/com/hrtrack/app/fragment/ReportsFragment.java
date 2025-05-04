@@ -47,17 +47,14 @@ public class ReportsFragment extends Fragment {
     private void loadReports() {
         String userId = mAuth.getCurrentUser().getUid();
 
-        // Calculate weekly and monthly hours
         Calendar calendar = Calendar.getInstance();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd", Locale.US);
 
-        // Weekly range
         calendar.set(Calendar.DAY_OF_WEEK, calendar.getFirstDayOfWeek());
         String weekStart = sdf.format(calendar.getTime());
         calendar.add(Calendar.DAY_OF_WEEK, 6);
         String weekEnd = sdf.format(calendar.getTime());
 
-        // Monthly range
         calendar.setTime(new Date());
         calendar.set(Calendar.DAY_OF_MONTH, 1);
         String monthStart = sdf.format(calendar.getTime());
@@ -65,7 +62,6 @@ public class ReportsFragment extends Fragment {
         calendar.add(Calendar.DAY_OF_MONTH, -1);
         String monthEnd = sdf.format(calendar.getTime());
 
-        // Load work hours
         db.collection("users").document(userId).collection("workHours")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
@@ -81,16 +77,15 @@ public class ReportsFragment extends Fragment {
                             monthlyHours += calculateHours(workHour);
                         }
                     }
-                    tvWeeklyHours.setText(getString(R.string.weekly_hours, weeklyHours));
-                    tvMonthlyHours.setText(getString(R.string.monthly_hours, monthlyHours));
+                    tvWeeklyHours.setText(String.format(Locale.US, getString(R.string.weekly_hours), weeklyHours));
+                    tvMonthlyHours.setText(String.format(Locale.US, getString(R.string.monthly_hours), monthlyHours));
                 });
 
-        // Load holidays
         db.collection("users").document(userId).collection("holidays")
                 .get()
                 .addOnSuccessListener(queryDocumentSnapshots -> {
                     int totalHolidays = queryDocumentSnapshots.size();
-                    tvTotalHolidays.setText(getString(R.string.total_holidays, totalHolidays));
+                    tvTotalHolidays.setText(String.format(Locale.US, getString(R.string.total_holidays), totalHolidays));
                 });
     }
 

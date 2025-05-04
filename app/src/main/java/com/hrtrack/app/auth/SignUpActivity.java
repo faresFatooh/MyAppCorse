@@ -14,11 +14,11 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.firestore.FirebaseFirestore;
-import com.hrtrack.app.MainActivity;
 import com.hrtrack.app.R;
 import com.hrtrack.app.fragment.AccountInfoFragment;
 import com.hrtrack.app.fragment.PersonalInfoFragment;
 import com.hrtrack.app.fragment.WorkInfoFragment;
+import com.hrtrack.app.ui.MainActivity;
 import com.hrtrack.app.utils.CustomToast;
 
 import java.util.HashMap;

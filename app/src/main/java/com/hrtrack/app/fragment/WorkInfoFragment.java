@@ -52,7 +52,6 @@ public class WorkInfoFragment extends Fragment {
         chipGroupDays = view.findViewById(R.id.chip_group_days);
         recyclerWorkingHours = view.findViewById(R.id.recycler_working_hours);
 
-        // Initialize day schedules
         daySchedules = new ArrayList<>();
         String[] days = {
                 getString(R.string.day_sun),

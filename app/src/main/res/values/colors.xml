@@ -12,5 +12,11 @@
     <color name="nav_item_color">?attr/colorPrimary</color>
     <color name="text_secondary">#B0BEC5</color>
 
+    <color name="background">#F5F5F5</color>
+    <color name="secondary">#FF4081</color>
+    <color name="primary_text">#212121</color>
+    <color name="secondary_text">#757575</color>
+    <color name="status_text">#4CAF50</color>
+
 
 </resources>

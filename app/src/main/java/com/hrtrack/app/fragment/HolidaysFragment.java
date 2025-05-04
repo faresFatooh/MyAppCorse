@@ -6,7 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
-import android.widget.EditText;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -15,6 +15,7 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.textfield.TextInputEditText;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -31,8 +32,9 @@ public class HolidaysFragment extends Fragment {
     private RecyclerView recyclerView;
     private HolidayAdapter adapter;
     private List<Holiday> holidayList;
-    private EditText etHolidayDate, etHolidayReason;
+    private TextInputEditText etHolidayDate, etHolidayReason;
     private Button btnAddHoliday;
+    private ProgressBar progressBar;
     private FirebaseFirestore db;
     private FirebaseAuth mAuth;
 
@@ -49,6 +51,7 @@ public class HolidaysFragment extends Fragment {
         etHolidayDate = view.findViewById(R.id.et_holiday_date);
         etHolidayReason = view.findViewById(R.id.et_holiday_reason);
         btnAddHoliday = view.findViewById(R.id.btn_add_holiday);
+        progressBar = view.findViewById(R.id.progress_bar);
 
         holidayList = new ArrayList<>();
         adapter = new HolidayAdapter(holidayList);
@@ -81,21 +84,27 @@ public class HolidaysFragment extends Fragment {
             return;
         }
 
+        progressBar.setVisibility(View.VISIBLE);
         String userId = mAuth.getCurrentUser().getUid();
         Holiday holiday = new Holiday(date, reason);
         db.collection("users").document(userId).collection("holidays")
                 .document(date)
                 .set(holiday)
                 .addOnSuccessListener(aVoid -> {
+                    progressBar.setVisibility(View.GONE);
                     CustomToast.show(getContext(), getString(R.string.holiday_added));
                     etHolidayDate.setText("");
                     etHolidayReason.setText("");
                     loadHolidays();
                 })
-                .addOnFailureListener(e -> CustomToast.show(getContext(), getString(R.string.error_store_data, e.getMessage())));
+                .addOnFailureListener(e -> {
+                    progressBar.setVisibility(View.GONE);
+                    CustomToast.show(getContext(), getString(R.string.error_store_data, e.getMessage()));
+                });
     }
 
     private void loadHolidays() {
+        progressBar.setVisibility(View.VISIBLE);
         String userId = mAuth.getCurrentUser().getUid();
         db.collection("users").document(userId).collection("holidays")
                 .get()
@@ -106,6 +115,11 @@ public class HolidaysFragment extends Fragment {
                         holidayList.add(holiday);
                     }
                     adapter.notifyDataSetChanged();
+                    progressBar.setVisibility(View.GONE);
+                })
+                .addOnFailureListener(e -> {
+                    progressBar.setVisibility(View.GONE);
+                    CustomToast.show(getContext(), getString(R.string.error_load_data, e.getMessage()));
                 });
     }
 
@@ -170,15 +184,20 @@ public class HolidaysFragment extends Fragment {
         }
 
         private void deleteHoliday(String date) {
+            progressBar.setVisibility(View.VISIBLE);
             String userId = mAuth.getCurrentUser().getUid();
             db.collection("users").document(userId).collection("holidays")
                     .document(date)
                     .delete()
                     .addOnSuccessListener(aVoid -> {
+                        progressBar.setVisibility(View.GONE);
                         CustomToast.show(getContext(), getString(R.string.holiday_deleted));
                         loadHolidays();
                     })
-                    .addOnFailureListener(e -> CustomToast.show(getContext(), getString(R.string.error_store_data, e.getMessage())));
+                    .addOnFailureListener(e -> {
+                        progressBar.setVisibility(View.GONE);
+                        CustomToast.show(getContext(), getString(R.string.error_store_data, e.getMessage()));
+                    });
         }
     }
 }
